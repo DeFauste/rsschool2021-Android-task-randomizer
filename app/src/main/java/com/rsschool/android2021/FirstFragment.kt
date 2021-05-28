@@ -8,11 +8,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
+import java.lang.Exception
+import java.math.BigInteger
 
 class FirstFragment : Fragment() {
     private var listener:onActionFirstFragment? = null
@@ -41,24 +44,28 @@ class FirstFragment : Fragment() {
         val result = arguments?.getInt(PREVIOUS_RESULT_KEY)
         previousResult?.text = "Previous result: ${result.toString()}"
 
-
         // TODO: val min = ...
         var min:Int
         // TODO: val max = ...
         var max:Int
 
+        val maxInt = Int.MAX_VALUE
 
         generateButton?.setOnClickListener {
+            try {
             min = if(view.findViewById<EditText>(R.id.min_value).text.isEmpty()) 0 else view.findViewById<EditText>(
             R.id.min_value
         ).text.toString().toInt()
             max = if(view.findViewById<EditText>(R.id.max_value).text.isEmpty()) 0 else view.findViewById<EditText>(
             R.id.max_value
             ).text.toString().toInt()
-
+                if(min < max)
+                    listener?.onActionPerformed(min,max)
+            }catch (e:Exception){
+                Toast.makeText(getActivity(), "Введите значение до ${maxInt}",Toast.LENGTH_LONG).show()
+            }
+            val maxInt = Int.MAX_VALUE
             // TODO: send min and max to the SecondFragment
-            if(min < max)
-            listener?.onActionPerformed(min,max)
         }
     }
 
