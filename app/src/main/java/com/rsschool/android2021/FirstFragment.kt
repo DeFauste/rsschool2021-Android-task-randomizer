@@ -64,7 +64,6 @@ class FirstFragment : Fragment() {
             }catch (e:Exception){
                 Toast.makeText(getActivity(), "Введите значение до ${maxInt}",Toast.LENGTH_LONG).show()
             }
-            val maxInt = Int.MAX_VALUE
             // TODO: send min and max to the SecondFragment
         }
     }
