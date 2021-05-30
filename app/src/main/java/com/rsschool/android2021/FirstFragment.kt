@@ -44,32 +44,37 @@ class FirstFragment : Fragment() {
         val result = arguments?.getInt(PREVIOUS_RESULT_KEY)
         previousResult?.text = "Previous result: ${result.toString()}"
 
-        // TODO: val min = ...
+        // TODO: min = ...
         var min:Int
-        // TODO: val max = ...
+        // TODO: max = ...
         var max:Int
 
         val maxInt = Int.MAX_VALUE
 
         generateButton?.setOnClickListener {
-            try {
-            min = if(view.findViewById<EditText>(R.id.min_value).text.isEmpty()) 0 else view.findViewById<EditText>(
-            R.id.min_value
-        ).text.toString().toInt()
-            max = if(view.findViewById<EditText>(R.id.max_value).text.isEmpty()) 0 else view.findViewById<EditText>(
-            R.id.max_value
-            ).text.toString().toInt()
-                if(min < max)
-                    listener?.onActionPerformed(min,max)
-            }catch (e:Exception){
-                Toast.makeText(getActivity(), "Введите значение до ${maxInt}",Toast.LENGTH_LONG).show()
+            val checkMin = view.findViewById<EditText>(R.id.min_value).text
+            val checkMax = view.findViewById<EditText>(R.id.max_value).text
+
+            if(!checkMin.isEmpty() && !checkMax.isEmpty())
+                try {
+                min = checkMin.toString().toInt()
+                max = checkMax.toString().toInt()
+                    if(min < max)
+                        listener?.onActionPerformed(min,max)
+                    else if (min == max)
+                        Toast.makeText(getActivity(), "Введите разные значения",Toast.LENGTH_LONG).show()
+                    else
+                        Toast.makeText(getActivity(), "Поменяйте значения местами",Toast.LENGTH_LONG).show()
+                }catch (e:Exception){
+                    Toast.makeText(getActivity(), "Введите значение до ${maxInt}",Toast.LENGTH_LONG).show()
+                }
+            else{
+                Toast.makeText(getActivity(), "Заполните все поля",Toast.LENGTH_LONG).show()
             }
-            // TODO: send min and max to the SecondFragment
         }
     }
 
     companion object {
-
         @JvmStatic
         fun newInstance(previousResult: Int): FirstFragment {
             val fragment = FirstFragment()
@@ -81,6 +86,7 @@ class FirstFragment : Fragment() {
 
         private const val PREVIOUS_RESULT_KEY = "PREVIOUS_RESULT"
     }
+    //transfer to activity
     interface onActionFirstFragment{
         fun onActionPerformed(min:Int, max:Int)
     }

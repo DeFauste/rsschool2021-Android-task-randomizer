@@ -2,18 +2,15 @@ package com.rsschool.android2021
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.setFragmentResultListener
 import kotlin.random.Random
 
-class SecondFragment : Fragment() {
+class SecondFragment : Fragment(), IOnBackPressed{
     private var listener:onActionSecondFragment? = null
 
     override fun onAttach(context: Context) {
@@ -70,7 +67,13 @@ class SecondFragment : Fragment() {
         private const val MIN_VALUE_KEY = "MIN_VALUE"
         private const val MAX_VALUE_KEY = "MAX_VALUE"
     }
+
+    //transfer to activity
     interface onActionSecondFragment{
         fun onActionPerformed(result:Int)
+    }
+    //click processing "<"
+    override fun onBackPressed(): Int {
+       return result?.text.toString().toInt()
     }
 }
